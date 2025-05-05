@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TradeCalce by Harshal.s.c</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+        h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+        .calculator {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        label, input, button {
+            display: block;
+            margin: 10px 0;
+        }
+        input, button {
+            padding: 8px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            background: #3a8ef6;
+            color: white;
+            cursor: pointer;
+        }
+        .result {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .positive {
+            color: limegreen;
+        }
+        .negative {
+            color: red;
+        }
+    </style>
+    <script>
+        function showResult(id, value) {
+            const el = document.getElementById(id);
+            el.innerText = value;
+            el.className = "result " + (parseFloat(value) >= 0 ? "positive" : "negative");
+        }
+        function avgPrice() {
+            let qty1 = parseFloat(document.getElementById("qty1").value);
+            let price1 = parseFloat(document.getElementById("price1").value);
+            let qty2 = parseFloat(document.getElementById("qty2").value);
+            let price2 = parseFloat(document.getElementById("price2").value);
+            let totalQty = qty1 + qty2;
+            let totalAmt = qty1 * price1 + qty2 * price2;
+            showResult("avgResult", (totalAmt / totalQty).toFixed(2));
+        }
+        function profitLoss() {
+            let bp = parseFloat(document.getElementById("buyPrice").value);
+            let sp = parseFloat(document.getElementById("sellPrice").value);
+            let qty = parseFloat(document.getElementById("quantity").value);
+            showResult("plResult", ((sp - bp) * qty).toFixed(2));
+        }
+        function targetPrice() {
+            let ep = parseFloat(document.getElementById("entryPrice").value);
+            let percent = parseFloat(document.getElementById("targetPercent").value);
+            showResult("targetResult", (ep + (ep * percent / 100)).toFixed(2));
+        }
+        function stopLoss() {
+            let ep = parseFloat(document.getElementById("entry").value);
+            let percent = parseFloat(document.getElementById("stopPercent").value);
+            showResult("stopResult", (ep - (ep * percent / 100)).toFixed(2));
+        }
+        function brokerage() {
+            let buy = parseFloat(document.getElementById("buyVal").value);
+            let sell = parseFloat(document.getElementById("sellVal").value);
+            let brok = (buy + sell) * 0.0003;
+            showResult("brokerageResult", brok.toFixed(2));
+        }
+        function riskReward() {
+            let entry = parseFloat(document.getElementById("entryRR").value);
+            let stop = parseFloat(document.getElementById("stopRR").value);
+            let target = parseFloat(document.getElementById("targetRR").value);
+            let risk = entry - stop;
+            let reward = target - entry;
+            showResult("rrResult", (reward / risk).toFixed(2));
+        }
+        function positionSize() {
+            let accRisk = parseFloat(document.getElementById("accountRisk").value);
+            let tradeRisk = parseFloat(document.getElementById("riskPerTrade").value);
+            showResult("positionResult", (accRisk / tradeRisk).toFixed(2));
+        }
+        function compounded() {
+            let principal = parseFloat(document.getElementById("initial").value);
+            let rate = parseFloat(document.getElementById("rate").value) / 100;
+            let time = parseFloat(document.getElementById("periods").value);
+            let result = principal * Math.pow(1 + rate, time);
+            showResult("compoundResult", result.toFixed(2));
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Logo" class="logo">
+        <h1>TradeCalce by Harshal.s.c</h1>
+    </header>
+    <div class="calculator"><h2>1. Average Price Calculator</h2><input id="qty1" placeholder="Quantity 1"><input id="price1" placeholder="Price 1"><input id="qty2" placeholder="Quantity 2"><input id="price2" placeholder="Price 2"><button onclick="avgPrice()">Calculate</button><div id="avgResult" class="result"></div></div>
+    <div class="calculator"><h2>2. Profit/Loss Calculator</h2><input id="buyPrice" placeholder="Buy Price"><input id="sellPrice" placeholder="Sell Price"><input id="quantity" placeholder="Quantity"><button onclick="profitLoss()">Calculate</button><div id="plResult" class="result"></div></div>
+    <div class="calculator"><h2>3. Target Price Calculator</h2><input id="entryPrice" placeholder="Entry Price"><input id="targetPercent" placeholder="Target %"><button onclick="targetPrice()">Calculate</button><div id="targetResult" class="result"></div></div>
+    <div class="calculator"><h2>4. Stop Loss Calculator</h2><input id="entry" placeholder="Entry Price"><input id="stopPercent" placeholder="Stop Loss %"><button onclick="stopLoss()">Calculate</button><div id="stopResult" class="result"></div></div>
+    <div class="calculator"><h2>5. Brokerage Calculator</h2><input id="buyVal" placeholder="Buy Value"><input id="sellVal" placeholder="Sell Value"><button onclick="brokerage()">Calculate</button><div id="brokerageResult" class="result"></div></div>
+    <div class="calculator"><h2>6. Risk Reward Ratio Calculator</h2><input id="entryRR" placeholder="Entry Price"><input id="stopRR" placeholder="Stop Loss Price"><input id="targetRR" placeholder="Target Price"><button onclick="riskReward()">Calculate</button><div id="rrResult" class="result"></div></div>
+    <div class="calculator"><h2>7. Position Size Calculator</h2><input id="accountRisk" placeholder="Account Risk Amount"><input id="riskPerTrade" placeholder="Risk per Trade"><button onclick="positionSize()">Calculate</button><div id="positionResult" class="result"></div></div>
+    <div class="calculator"><h2>8. Compounded Return Calculator</h2><input id="initial" placeholder="Initial Amount"><input id="rate" placeholder="Rate (%)"><input id="periods" placeholder="Periods"><button onclick="compounded()">Calculate</button><div id="compoundResult" class="result"></div></div>
+</body>
+</html>
